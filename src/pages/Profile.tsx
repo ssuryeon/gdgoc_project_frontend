@@ -10,12 +10,21 @@ const Container = styled(LinearGradient)`
     padding: 40px;
 `;
 
+const Modal = styled.View`
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+`;
+
 const Profile = () => {
     const theme = useTheme();
     return (
         <>
             <Container colors={[theme.inputColor, theme.brandColor]}>
-                
+                <Modal>
+                    
+                </Modal>
             </Container>
         </>
     )
