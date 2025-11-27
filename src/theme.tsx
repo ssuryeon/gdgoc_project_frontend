@@ -5,5 +5,7 @@ export const theme = {
     grayText: '#606060',
     darkpurple: '#3D396D',
     chat1: '#A8B8FF',
-    inputColor: '#E2E1ED'
+    inputColor: '#E2E1ED',
+    profileBackground: '#CAC4D0',
+    profileIcon: '#625B71'
 }

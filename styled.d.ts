@@ -9,6 +9,8 @@ declare module 'styled-components/native' {
       grayText: string,
       darkpurple: string,
       chat1: string,
+      profileBackground: string,
+      profileIcon: string,
     }
 }
   
