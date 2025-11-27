@@ -5,12 +5,14 @@ import {theme} from './theme';
 // import SignUp from './pages/SignUp';
 // import Profile from './pages/Profile';
 // import ModifyPage from './pages/ModifyPage';
-import SearchPage from './pages/SearchPage';
+// import SearchPage from './pages/SearchPage';
+// import ChatListPage from './pages/ChatListPage';
+import ChattingPage from './pages/ChattingPage';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <SearchPage />
+      <ChattingPage />
     </ThemeProvider>
   );
 }

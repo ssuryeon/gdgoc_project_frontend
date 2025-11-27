@@ -12,7 +12,7 @@ const ModifyPage = () => {
         <>
             <Header text='프로필 수정' />
             <ScrollView style={{width: '100%'}}>
-                <Container>
+                <Container style={{padding: 30}}>
                     <View style={{width: '100%', marginBottom: 30, justifyContent: 'center', alignItems: 'center'}}>
                         <ProfileIcon />
                         <Button text="이미지 수정" style={{width: 100, height: 40}} textStyle={{fontSize: 16}}/>

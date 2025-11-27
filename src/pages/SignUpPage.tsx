@@ -11,7 +11,7 @@ const SignUpPage = () => {
         <>
             <Header text="회원가입"/>
             <ScrollView style={{width: '100%'}}>
-                <Container>
+                <Container style={{padding: 30}}>
                     <Form text="이름"/>
                     <BtnForm text="아이디"/>
                     <BtnForm text="전화번호" />
