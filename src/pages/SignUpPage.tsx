@@ -6,7 +6,7 @@ import Form from '../components/Form';
 import BtnForm from '../components/BtnForm';
 import {Container} from '../components/Container';
 
-const SignUp = () => {
+const SignUpPage = () => {
     return (
         <>
             <Header text="회원가입"/>
@@ -25,4 +25,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp;
+export default SignUpPage;

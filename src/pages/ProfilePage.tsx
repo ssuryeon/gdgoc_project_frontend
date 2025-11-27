@@ -32,17 +32,7 @@ const Info = styled.View`
     margin-top: 20px;
 `;
 
-const Circle = styled.View`
-    width: 150px;
-    height: 150px;
-    background-color: ${props => props.theme.profileBackground};
-    margin-bottom: 20px;
-    border-radius: 50%;
-    justify-content: center;
-    align-items: center;
-`;
-
-const Profile = () => {
+const ProfilePage = () => {
     const theme = useTheme();
     return (
         <>
@@ -87,4 +77,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Profile;
+export default ProfilePage;
