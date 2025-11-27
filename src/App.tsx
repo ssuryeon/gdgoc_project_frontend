@@ -4,12 +4,13 @@ import {theme} from './theme';
 // import Home from './pages/Home';
 // import SignUp from './pages/SignUp';
 // import Profile from './pages/Profile';
-import ModifyProfile from './pages/ModifyProfile';
+// import ModifyPage from './pages/ModifyPage';
+import SearchPage from './pages/SearchPage';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <ModifyProfile />
+      <SearchPage />
     </ThemeProvider>
   );
 }

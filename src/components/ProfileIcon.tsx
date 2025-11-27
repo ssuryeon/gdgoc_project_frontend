@@ -12,14 +12,15 @@ const Circle = styled.View`
 `;
 
 interface IProfile {
-    style?: Object
+    style?: Object,
+    iconSize?: number
 }
 
-const ProfileIcon = ({style}:IProfile) => {
+const ProfileIcon = ({style, iconSize=100}:IProfile) => {
     const theme = useTheme();
     return (
         <Circle style={style}>
-            <Ionicons name='person' size={100} color={theme.profileIcon}/>
+            <Ionicons name='person' size={iconSize} color={theme.profileIcon}/>
         </Circle>
     )
 }

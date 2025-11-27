@@ -5,17 +5,9 @@ import Form from '../components/Form';
 import BtnForm from '../components/BtnForm';
 import Button from '../components/Button';
 import {View, ScrollView} from 'react-native';
+import {Container} from '../components/Container';
 
-const Container = styled.View`
-    background-color: #fff;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-
-    padding: 30px;
-`;
-
-const ModifyProfile = () => {
+const ModifyPage = () => {
     return (
         <>
             <Header text='프로필 수정' />
@@ -38,4 +30,4 @@ const ModifyProfile = () => {
     )
 }
 
-export default ModifyProfile;
+export default ModifyPage;
