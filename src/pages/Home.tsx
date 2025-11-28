@@ -5,6 +5,10 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import CustomText from '../components/CustomText';
 import LinearGradient, {LinearGradientProps} from 'react-native-linear-gradient';
+import {grpc} from '@improbable-eng/grpc-web';
+import { ReactNativeTransport } from '@improbable-eng/grpc-web-react-native-transport';
+
+
 
 const Container = styled(LinearGradient)<LinearGradientProps>`
     width: 100%;
