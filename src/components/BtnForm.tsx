@@ -3,6 +3,9 @@ import Button from './Button';
 import CustomText from './CustomText';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
+import {useContext, useState} from 'react';
+import UserContext from '../contexts/UserContext';
+import {checkUserId, checkEmail, checkPhone} from '../utils/verifyUser';
 
 interface IForm {
     text: string,
@@ -17,13 +20,57 @@ const VerifyText = styled.Text`
 
 
 const BtnForm = ({text}:IForm) => {
+    const {actions} = useContext(UserContext);
+    const [value, setValue] = useState('');
+    let available = false;
+
+    const onChange = (e) => {
+        const {name, text} = e;
+        console.log(text);
+        setValue(text);
+        switch(name) {
+            case '아이디':
+                actions.setUsername(text);
+                break;
+            case '전화번호':
+                actions.setPhone(text);
+                break;
+            case '이메일':
+                actions.setEmail(text);
+                break;
+        }
+    }
+    
+    const onPress = async () => {
+        switch(text) {
+            case '아이디':
+                const idResult = await checkUserId(value); //
+                if(idResult != 'error') {
+                    available = idResult;
+                }
+                break;
+            case '전화번호':
+                const phoneResult = await checkPhone(value);
+                if(phoneResult != 'error') {
+                    available = true;
+                }
+                break;
+            case '이메일':
+                const emailResult = await checkEmail(value);
+                if(emailResult != 'error') {
+                    available = emailResult;
+                }
+                break;
+        }
+    };
+
     return (
         <View style={{width: '100%', marginBottom: 20}}>
             <CustomText style={{fontFamily: 'Pretendard-SemiBold', fontSize: 24}}>{text}</CustomText>
             <View style={{width: '100%', flexDirection: 'row'}}>
-                <Input style={{flex: 1, height: 50}}/><Button style={{width: '25%', height: 50, marginLeft: 10}} textStyle={{fontSize: 16}} text='중복확인'/>
+                <Input style={{flex: 1, height: 50}} onChange={onChange} name={text} value={value}/><Button style={{width: '25%', height: 50, marginLeft: 10}} textStyle={{fontSize: 16}} onPress={onPress} text='중복확인'/>
             </View>
-            <VerifyText>사용 가능한 {text}입니다.</VerifyText>
+            {available? <VerifyText>사용 가능한 {text}입니다.</VerifyText> : null}
         </View>
     )
 }

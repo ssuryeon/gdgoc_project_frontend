@@ -13,11 +13,12 @@ interface IButton {
     text: string
     style?: Object
     textStyle?: Object
+    onPress?: () => void
 }
 
-const Button = ({text, style, textStyle}:IButton) => {
+const Button = ({text, style, textStyle, onPress}:IButton) => {
     return (
-        <ButtonStyle style={style}>
+        <ButtonStyle style={style} onPress={onPress}>
             <CustomText style={[styles.text, textStyle]}>{text}</CustomText>
         </ButtonStyle>
     )
