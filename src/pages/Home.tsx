@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import CustomText from '../components/CustomText';
 import LinearGradient, {LinearGradientProps} from 'react-native-linear-gradient';
+import {login} from '../utils/login';
 
 const Container = styled(LinearGradient)<LinearGradientProps>`
     width: 100%;
@@ -24,15 +25,38 @@ const Modal = styled.View`
 
 const Home = () => {
     const theme = useTheme();
+    const [id, setId] = useState();
+    const [password, setPassword] = useState();
+
+    const onIdChange = (e) => {
+        const {text} = e;
+        setId(text);
+    }
+
+    const onPasswordChange = (e) => {
+        const {text} = e;
+        setPassword(text);
+    }
+
+    const onPress = () => {
+        login(id, password)
+            .then(val => {
+                console.log(val);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }
+
     return (
         <Container colors={[theme.brandColor, theme.brandColor2]}>
             <CustomText style={[styles.logo, {marginBottom: 100}]}>Logo</CustomText>
             <Modal style={{marginBottom: 20}}>
                 <CustomText style={[styles.text, {marginBottom: 10}]}>아이디</CustomText>
-                <Input style={[styles.input, {marginBottom: 20}]}/>
+                <Input style={[styles.input, {marginBottom: 20}]} value={id} onChange={onIdChange}/>
                 <CustomText style={[styles.text, {marginBottom: 10}]}>비밀번호</CustomText>
-                <Input style={[styles.input, {marginBottom: 35}]}/>
-                <Button style={styles.btn} text="로그인" />
+                <Input style={[styles.input, {marginBottom: 35}]} value={password} onChange={onPasswordChange}/>
+                <Button style={styles.btn} text="로그인" onPress={onPress} />
             </Modal>
             <Button style={styles.btn} text="회원가입" />
         </Container>

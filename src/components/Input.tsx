@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 interface IInput {
-    name: string,
+    name?: string,
 }
 
 const Input = styled.TextInput<IInput>`

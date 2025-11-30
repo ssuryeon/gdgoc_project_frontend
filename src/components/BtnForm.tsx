@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import styled from 'styled-components/native';
 import {useContext, useState} from 'react';
 import UserContext from '../contexts/UserContext';
-import {checkUserId, checkEmail, checkPhone} from '../utils/verifyUser';
+import {checkUserId, checkEmail} from '../utils/verifyUser';
 
 interface IForm {
     text: string,
@@ -22,7 +22,7 @@ const VerifyText = styled.Text`
 const BtnForm = ({text}:IForm) => {
     const {actions} = useContext(UserContext);
     const [value, setValue] = useState('');
-    let available = false;
+    let available:any = false;
 
     const onChange = (e) => {
         const {name, text} = e;
@@ -44,22 +44,30 @@ const BtnForm = ({text}:IForm) => {
     const onPress = async () => {
         switch(text) {
             case '아이디':
-                const idResult = await checkUserId(value); //
-                if(idResult != 'error') {
-                    available = idResult;
-                }
+                checkUserId(value)
+                    .then((val) => {
+                        console.log(val);
+                        available = val;
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
                 break;
             case '전화번호':
-                const phoneResult = await checkPhone(value);
-                if(phoneResult != 'error') {
-                    available = true;
-                }
+                // const phoneResult = await checkPhone(value);
+                // if(phoneResult != 'error') {
+                //     available = true;
+                // }
                 break;
             case '이메일':
-                const emailResult = await checkEmail(value);
-                if(emailResult != 'error') {
-                    available = emailResult;
-                }
+                checkEmail(value)
+                    .then((val) => {
+                        console.log(val);
+                        available = val;
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
                 break;
         }
     };

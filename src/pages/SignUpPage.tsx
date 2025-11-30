@@ -8,8 +8,13 @@ import {signUp} from '../utils/verifyUser';
 
 const SignUpPage = () => {
     const onPress = async () => {
-        const res = await signUp();
-        console.log(res);
+        signUp()
+            .then((val) => {
+                console.log(val);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
     return (
         <>
