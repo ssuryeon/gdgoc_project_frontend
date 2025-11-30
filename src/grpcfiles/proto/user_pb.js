@@ -1,4 +1,7 @@
 // source: user.proto
+var proto = {};
+proto.user = {};
+proto.user.v1 = {};
 /**
  * @fileoverview
  * @enhanceable
@@ -20,10 +23,6 @@ var global =
     (typeof self !== 'undefined' && self) ||
     (function () { return this; }).call(null) ||
     Function('return this')();
-
-var proto = {};
-proto.user = {};
-proto.user.v1 = {};
 
 var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 goog.object.extend(proto, google_protobuf_timestamp_pb);
@@ -63,6 +62,7 @@ goog.exportSymbol('proto.user.v1.VerifyPhoneResponse', null, global);
  * @extends {jspb.Message}
  * @constructor
  */
+
 proto.user.v1.User = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };

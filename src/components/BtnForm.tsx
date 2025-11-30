@@ -49,7 +49,10 @@ const BtnForm = ({text}:IForm) => {
                         available = val;
                     })
                     .catch((error) => {
-                        console.error(error);
+                        console.log('gRPC error >>>');
+                        console.log('message:', error.message);
+                        console.log('code:', error.code);
+                        console.log('metadata:', error.metadata);
                     })
                 break;
             case '전화번호':

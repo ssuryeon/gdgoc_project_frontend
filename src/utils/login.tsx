@@ -1,20 +1,29 @@
-import { UserServiceClient } from '../grpcfiles/proto/user_grpc_web_pb.js';
-const userpb = require('../grpcfiles/proto/user_pb.js');
+import { UserService } from '../grpcfiles/proto/user_pb_service';
+import {LoginRequest, LoginResponse} from '../grpcfiles/proto/user_pb';
 import { NativeGRPCTransport } from '@matejdr/react-native-grpc-bridge';
+import { grpc } from "@improbable-eng/grpc-web";
 
 const transport = NativeGRPCTransport({ host: 'localhost:50051' } as any) as any;
-const client = new UserServiceClient('localhost:50051', null, {transport});
-const LoginRequest = new userpb.LoginRequest;
-
 
 export function login(username, password) {
     const req = new LoginRequest();
     req.setUsername(username);
     req.setPassword(password);
     return new Promise((resolve, reject) => {
-        client.login(req, {}, (err, res) => {
-            if(err) return reject(err);
-            resolve(res.toObject());
+        grpc.unary(UserService.Login, {
+            request: req,
+            host: '34.22.69.10:50052',
+            transport,
+            onEnd: ({ status, statusMessage, message }) => {
+                console.log("grpc status:", status, statusMessage);
+
+                if (!message || status !== grpc.Code.OK) {
+                return reject(new Error(statusMessage));
+                }
+                const token = (message as LoginResponse).getAccessToken();
+                console.log('login token: ', token);
+                resolve(token);
+            }
         })
     })
 }
