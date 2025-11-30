@@ -10,8 +10,8 @@ const RequestPhoneVerificationRequest = userpb.RequestPhoneVerificationRequest;
 const SignUpRequest = userpb.SignUpRequest;
 
 
-const transport = NativeGRPCTransport({ host: 'localhost:50051' } as any) as any;
-const client = new UserServiceClient('localhost:50051', null, {transport});
+const transport = NativeGRPCTransport({ host: 'http://10.0.2.2:8080' } as any) as any;
+const client = new UserServiceClient('http://10.0.2.2:8080', null, {transport});
 
 export async function checkUserId(username) {
     const req = new CheckUsernameRequest();

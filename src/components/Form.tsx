@@ -11,13 +11,13 @@ interface IForm {
 const Form = ({text}:IForm) => {
     const {actions} = useContext(UserContext);
     const onChange = (e) => {
-        const {name, text} = e;
-        switch(name) {
+        const val = e.nativeEvent.text;
+        switch(text) {
             case '이름':
-                actions.setName(text);
+                actions.setName(val);
                 break;
             case '비밀번호':
-                actions.setPassword(text);
+                actions.setPassword(val);
                 break;
         }
     }

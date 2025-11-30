@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 
 interface IInput {
     name?: string,
+    // onChange: () => void
 }
 
 const Input = styled.TextInput<IInput>`

@@ -18,25 +18,24 @@ const VerifyText = styled.Text`
     margin-top: 10px;
 `;
 
-
 const BtnForm = ({text}:IForm) => {
     const {actions} = useContext(UserContext);
     const [value, setValue] = useState('');
     let available:any = false;
 
     const onChange = (e) => {
-        const {name, text} = e;
-        console.log(text);
-        setValue(text);
-        switch(name) {
+        const val = e.nativeEvent.text
+        console.log(text, val);
+        setValue(val);
+        switch(text) {
             case '아이디':
-                actions.setUsername(text);
+                actions.setUsername(val);
                 break;
             case '전화번호':
-                actions.setPhone(text);
+                actions.setPhone(val);
                 break;
             case '이메일':
-                actions.setEmail(text);
+                actions.setEmail(val);
                 break;
         }
     }
@@ -76,7 +75,7 @@ const BtnForm = ({text}:IForm) => {
         <View style={{width: '100%', marginBottom: 20}}>
             <CustomText style={{fontFamily: 'Pretendard-SemiBold', fontSize: 24}}>{text}</CustomText>
             <View style={{width: '100%', flexDirection: 'row'}}>
-                <Input style={{flex: 1, height: 50}} onChange={onChange} name={text} value={value}/><Button style={{width: '25%', height: 50, marginLeft: 10}} textStyle={{fontSize: 16}} onPress={onPress} text='중복확인'/>
+                <Input style={{flex: 1, height: 50}} onChange={onChange} name={text} value={value} /><Button style={{width: '25%', height: 50, marginLeft: 10}} textStyle={{fontSize: 16}} onPress={onPress} text='중복확인'/>
             </View>
             {available? <VerifyText>사용 가능한 {text}입니다.</VerifyText> : null}
         </View>
