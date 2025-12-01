@@ -4,7 +4,7 @@ import CustomText from './CustomText';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
 import {useContext, useState, useEffect} from 'react';
-import UserContext from '../contexts/UserContext';
+import {UserContext} from '../contexts/UserContext';
 import {checkUsername, checkEmail, checkPhone} from '../utils/signupUser';
 
 interface IForm {

@@ -7,10 +7,10 @@ import Button from '../components/Button';
 import {View, ScrollView} from 'react-native';
 import {Container} from '../components/Container';
 
-const ModifyPage = () => {
+const ModifyPage = ({navigation}) => {
     return (
         <>
-            <Header text='프로필 수정' />
+            <Header text='프로필 수정' isBack={true} nav={navigation}/>
             <ScrollView style={{width: '100%'}}>
                 <Container style={{padding: 30}}>
                     <View style={{width: '100%', marginBottom: 30, justifyContent: 'center', alignItems: 'center'}}>

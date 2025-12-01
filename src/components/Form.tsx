@@ -2,7 +2,7 @@ import {View} from 'react-native';
 import CustomText from './CustomText';
 import Input from './Input';
 import {useContext, useState} from 'react';
-import UserContext from '../contexts/UserContext';
+import {UserContext} from '../contexts/UserContext';
 
 interface IForm {
     text: string,

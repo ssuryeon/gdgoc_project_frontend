@@ -3,9 +3,10 @@ import styled, {useTheme} from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../components/Button';
 import CustomText from '../components/CustomText';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, useWindowDimensions} from 'react-native';
 import Menu from '../components/Menu';
 import ProfileIcon from '../components/ProfileIcon';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Container = styled(LinearGradient)`
     width: 100%;
@@ -33,30 +34,41 @@ const Info = styled.View`
     margin-top: 20px;
 `;
 
-const ProfilePage = () => {
+const ProfilePage = ({navigation}) => {
     const theme = useTheme();
+    const {width} = useWindowDimensions();
+    const baseWidth = 375
+    const scale = width / baseWidth;
+    const onPress = () => {
+        navigation.navigate('Home');
+        AsyncStorage.removeItem('accessToken');
+    }
+
     return (
         <>
             <Container colors={[theme.inputColor, theme.brandColor]}>
                 <Modal style={styles.shadow}>
                     <ProfileIcon  style={{width: 130, height: 130}} iconSize={80}/>
-                    <CustomText style={{fontSize: 32, fontWeight: 700}}>hongildong1234</CustomText>
-                    <CustomText style={{fontSize: 24, fontWeight: 500, color: theme.grayText}}>랜덤한닉네임</CustomText>
+                    <CustomText style={{fontSize: 28*scale, fontWeight: 700}}>hongildong1234</CustomText>
+                    <CustomText style={{fontSize: 24*scale, fontWeight: 500, color: theme.grayText}}>랜덤한닉네임</CustomText>
                     <Info>
                         <View style={{marginBottom: 20}}>
-                            <CustomText style={{fontSize: 20, fontFamily: 'Pretendard-SemiBold'}}>이름</CustomText>
-                            <CustomText style={{fontSize: 20, fontWeight: 400, color: theme.grayText}}>홍길동</CustomText>
+                            <CustomText style={{fontSize: 18*scale, fontFamily: 'Pretendard-SemiBold'}}>이름</CustomText>
+                            <CustomText style={{fontSize: 18*scale, fontWeight: 400, color: theme.grayText}}>홍길동</CustomText>
                         </View>
                         <View style={{marginBottom: 20}}>
-                            <CustomText style={{fontSize: 20, fontFamily: 'Pretendard-SemiBold'}}>이메일</CustomText>
-                            <CustomText style={{fontSize: 20, fontWeight: 400, color: theme.grayText}}>gildong1234@naver.com</CustomText>
+                            <CustomText style={{fontSize: 18*scale, fontFamily: 'Pretendard-SemiBold'}}>이메일</CustomText>
+                            <CustomText style={{fontSize: 18*scale, fontWeight: 400, color: theme.grayText}}>gildong1234@naver.com</CustomText>
                         </View>
                         <View>
-                            <CustomText style={{fontSize: 20, fontFamily: 'Pretendard-SemiBold'}}>전화번호</CustomText>
-                            <CustomText style={{fontSize: 20, fontWeight: 400, color: theme.grayText}}>+82 10-1234-5678</CustomText>
+                            <CustomText style={{fontSize: 18*scale, fontFamily: 'Pretendard-SemiBold'}}>전화번호</CustomText>
+                            <CustomText style={{fontSize: 18*scale, fontWeight: 400, color: theme.grayText}}>+82 10-1234-5678</CustomText>
                         </View>
                     </Info>
-                    <Button style={{width: 140, height: 44, marginTop: 30, borderRadius: 5}} textStyle={{fontSize: 20}} text='프로필 수정'/>
+                    <View style={{flexDirection: 'row'}}>
+                        <Button style={{width: 100, height: 44, marginTop: 30, borderRadius: 5, marginRight: 10}} textStyle={{fontSize: 18*scale}} text='프로필 수정' onPress={() => navigation.navigate('ModifyPage')}/>
+                        <Button style={{width: 100, height: 44, marginTop: 30, borderRadius: 5}} textStyle={{fontSize: 18*scale}} text='로그아웃' onPress={onPress}/>
+                    </View>
                 </Modal>
             </Container>
             <Menu status='profile'/>

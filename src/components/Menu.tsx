@@ -50,14 +50,14 @@ const Menu = ({status}:IMenu) => {
     //     };
     // }
     // const onPressOut = (name) => {
-    //     if(name == 'search' && status != 'search') {
+    //     if(name == 'search') {
     //         setSearchColor(theme.brandColor);
     //     }
-    //     else if(name == 'chat' && status != 'chat') {
+    //     else if(name == 'chat') {
     //         setChatColor(theme.brandColor);
     //         setChatIcon('chatbubble-outline');
     //     }
-    //     else if(name == 'profile' && status != 'profile') {
+    //     else if(name == 'profile') {
     //         setProfileColor(theme.brandColor);
     //         setProfileIcon('person-outline');
     //     };
@@ -65,16 +65,16 @@ const Menu = ({status}:IMenu) => {
     return (
         <View style={styles.container}>
             <Pressable style={styles.middleAlign} onPress={() => onPress('search')} >
-                <Feather name='search' size={40} color={searchColor}/>
-                <CustomText style={{color: searchColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>검색</CustomText>
+                <Feather name='search' size={40} color={status == 'search'? theme.darkpurple : theme.brandColor}/>
+                <CustomText style={{color: status == 'search'? theme.darkpurple : theme.brandColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>검색</CustomText>
             </Pressable>
             <Pressable style={styles.middleAlign} onPress={() => onPress('chat')} >
-                <Ionicons name={chatIcon} size={40} color={chatColor}/>
-                <CustomText style={{color: chatColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>채팅</CustomText>
+                <Ionicons name={status == 'chat'? 'chatbubble-sharp' : 'chatbubble-outline'} size={40} color={status == 'chat'? theme.darkpurple : theme.brandColor}/>
+                <CustomText style={{color: status == 'chat'? theme.darkpurple : theme.brandColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>채팅</CustomText>
             </Pressable>
             <Pressable style={styles.middleAlign} onPress={() => onPress('profile')} >
-                <Ionicons name={profileIcon} size={40} color={profileColor}/>
-                <CustomText style={{color: profileColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>프로필</CustomText>
+                <Ionicons name={status == 'profile'? 'person' : 'person-outline'} size={40} color={status == 'profile'? theme.darkpurple : theme.brandColor}/>
+                <CustomText style={{color: status == 'profile'? theme.darkpurple : theme.brandColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>프로필</CustomText>
             </Pressable>
         </View>
     )

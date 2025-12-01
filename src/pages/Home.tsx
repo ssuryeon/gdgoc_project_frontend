@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import Button from '../components/Button';
@@ -26,6 +26,17 @@ const Modal = styled.View`
 `;
 
 const Home = ({navigation}) => {
+    useEffect(() => {
+        const checkToken = async () => {
+            try {
+                const token = await AsyncStorage.getItem('accessToken');
+                if(token) navigation.navigate('AfterLoginPage');
+            } catch(err) {
+                console.error('액세스 토큰 로딩 중 오류: ', err);
+            }
+        }
+        checkToken();
+    }, [])
     const theme = useTheme();
     const [id, setId] = useState();
     const [password, setPassword] = useState();
