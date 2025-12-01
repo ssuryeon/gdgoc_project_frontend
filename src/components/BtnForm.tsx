@@ -3,9 +3,9 @@ import Button from './Button';
 import CustomText from './CustomText';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import UserContext from '../contexts/UserContext';
-import {checkUserId, checkEmail} from '../utils/verifyUser';
+import {checkUsername, checkEmail, checkPhone} from '../utils/signupUser';
 
 interface IForm {
     text: string,
@@ -19,10 +19,9 @@ const VerifyText = styled.Text`
 `;
 
 const BtnForm = ({text}:IForm) => {
-    const {actions} = useContext(UserContext);
+    const {state, actions} = useContext(UserContext);
     const [value, setValue] = useState('');
-    let available:any = false;
-
+    const [available, setAvailable] = useState(false);
     const onChange = (e) => {
         const val = e.nativeEvent.text
         console.log(text, val);
@@ -41,19 +40,11 @@ const BtnForm = ({text}:IForm) => {
     }
     
     const onPress = async () => {
+        console.log('Btn pressed.');
         switch(text) {
             case '아이디':
-                checkUserId(value)
-                    .then((val) => {
-                        console.log(val);
-                        available = val;
-                    })
-                    .catch((error) => {
-                        console.log('gRPC error >>>');
-                        console.log('message:', error.message);
-                        console.log('code:', error.code);
-                        console.log('metadata:', error.metadata);
-                    })
+                const usernameRes = await checkUsername(value);
+                setAvailable(usernameRes);
                 break;
             case '전화번호':
                 // const phoneResult = await checkPhone(value);
@@ -62,17 +53,16 @@ const BtnForm = ({text}:IForm) => {
                 // }
                 break;
             case '이메일':
-                checkEmail(value)
-                    .then((val) => {
-                        console.log(val);
-                        available = val;
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    })
+                const emailRes = await checkEmail(value);
+                setAvailable(emailRes);
                 break;
         }
+        console.log('Server worked.');
     };
+
+    // useEffect(() => {
+    //     console.log('전역 username 변경:', state.username);
+    // }, [state.username]);
 
     return (
         <View style={{width: '100%', marginBottom: 20}}>

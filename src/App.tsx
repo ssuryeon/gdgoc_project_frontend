@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from './theme';
+import { UserProvider } from './contexts/UserContext';
 // import Home from './pages/Home';
 import SignUpPage from './pages/SignUpPage';
 // import Profile from './pages/Profile';
@@ -13,7 +14,9 @@ function App() {
   
   return (
     <ThemeProvider theme={theme}>
-      <SignUpPage />
+      <UserProvider>
+        <SignUpPage />
+      </UserProvider>
     </ThemeProvider>
   );
 }

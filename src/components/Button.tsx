@@ -1,6 +1,7 @@
-import styled from 'styled-components/native';
+import styled, {useTheme} from 'styled-components/native';
 import CustomText from './CustomText';
 import {StyleSheet} from 'react-native';
+import {useState} from 'react';
 
 const ButtonStyle = styled.Pressable`
     background-color: ${(props) => props.theme.btnColor};
@@ -17,8 +18,16 @@ interface IButton {
 }
 
 const Button = ({text, style, textStyle, onPress}:IButton) => {
+    const [color, setColor] = useState('');
+    const theme = useTheme();
+    const onPressIn = () => {
+        setColor('#7C7C7C');
+    }
+    const onPressOut = () => {
+        setColor(theme.btnColor);
+    }
     return (
-        <ButtonStyle style={style} onPress={onPress}>
+        <ButtonStyle style={[style, {backgroundColor: color}]} onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
             <CustomText style={[styles.text, textStyle]}>{text}</CustomText>
         </ButtonStyle>
     )

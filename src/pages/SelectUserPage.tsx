@@ -23,7 +23,7 @@ const SelectedUserPage = () => {
             <CustomText style={{fontSize: 32, fontWeight: 700, marginBottom: 0}}>김영수닉네임</CustomText>
             <CustomText style={{fontSize: 18, fontFamily: 'Pretendard-Medium', color: theme.grayText, marginBottom: 100}}>youngsukim12</CustomText>
             <View style={{flexDirection: 'row', width: '100%'}}>
-                <Button text="취소하기" style={{height: 52, marginRight: 20, flex: 1, backgroundColor: '#7C7C7C'}} textStyle={{fontSize: 20}} />
+                <Button text="취소하기" style={{height: 52, marginRight: 20, flex: 1}} textStyle={{fontSize: 20}} />
                 <Button text="채팅하기" style={{height: 52, flex: 1}} textStyle={{fontSize: 20} }/>
             </View>
         </Modal>

@@ -36,7 +36,7 @@ const UserContext = createContext<IUserContext>({
     }    
 })
 
-const UserProvider = ({children}) => {
+export const UserProvider = ({children}) => {
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
