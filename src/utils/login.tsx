@@ -1,29 +1,25 @@
-// import { UserService } from '../grpcfiles/proto/user_pb_service';
-// import {LoginRequest, LoginResponse} from '../grpcfiles/proto/user_pb';
-// import { NativeGRPCTransport } from '@matejdr/react-native-grpc-bridge';
-// import { grpc } from "@improbable-eng/grpc-web";
+import {Alert} from 'react-native';
 
-// const transport = NativeGRPCTransport({ host: 'localhost:50051' } as any) as any;
+const BFFURL = 'http://localhost:4000';
 
-// export function login(username, password) {
-//     const req = new LoginRequest();
-//     req.setUsername(username);
-//     req.setPassword(password);
-//     return new Promise((resolve, reject) => {
-//         grpc.unary(UserService.Login, {
-//             request: req,
-//             host: '34.22.69.10:50051',
-//             transport,
-//             onEnd: ({ status, statusMessage, message }) => {
-//                 console.log("grpc status:", status, statusMessage);
-
-//                 if (!message || status !== grpc.Code.OK) {
-//                 return reject(new Error(statusMessage));
-//                 }
-//                 const token = (message as LoginResponse).getAccessToken();
-//                 console.log('login token: ', token);
-//                 resolve(token);
-//             }
-//         })
-//     })
-// }
+export async function login(username, password) {
+    console.log(username, password);
+    const res = await fetch(`${BFFURL}/home/login`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password}),
+    });
+    console.log(res);
+    if(!res.ok) {
+        console.log('BFF status error: ', res.status);
+        Alert.alert('올바른 아이디와 비밀번호를 입력해주세요.');
+        return;
+    };
+    const data = await res.json();
+    console.log(data);
+    if (!data) {
+        throw new Error('BFF invalid response');
+        return;
+    }
+    return data;
+}

@@ -1,21 +1,21 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {ThemeProvider} from 'styled-components/native';
 import {theme} from './theme';
-import { UserProvider } from './contexts/UserContext';
-// import Home from './pages/Home';
-import SignUpPage from './pages/SignUpPage';
-// import Profile from './pages/Profile';
-// import ModifyPage from './pages/ModifyPage';
-// import SearchPage from './pages/SearchPage';
-// import ChatListPage from './pages/ChatListPage';
-// import ChattingPage from './pages/ChattingPage';
+import {UserProvider} from './contexts/UserContext';
+// import {AuthProvider} from './contexts/AuthContext';
+import StackNavigation from './navigations/Stack';
+import {NavigationContainer} from '@react-navigation/native';
 
 function App() {
   
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
-        <SignUpPage />
+        {/* <AuthProvider> */}
+        <NavigationContainer>
+          <StackNavigation />
+        </NavigationContainer>
+        {/* </AuthProvider> */}
       </UserProvider>
     </ThemeProvider>
   );

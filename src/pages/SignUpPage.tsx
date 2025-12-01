@@ -9,7 +9,7 @@ import {useContext, useState} from 'react';
 import UserContext from '../contexts/UserContext';
 import ConfirmForm from '../components/ConfirmForm';
 
-const SignUpPage = () => {
+const SignUpPage = ({navigation}) => {
     const {state} = useContext(UserContext);
     const [confirm, setConfirm] = useState('');
 
@@ -32,7 +32,7 @@ const SignUpPage = () => {
 
     return (
         <>
-            <Header text="회원가입"/>
+            <Header text="회원가입" isBack={true} nav={navigation}/>
             <ScrollView style={{width: '100%'}}>
                 <Container style={{padding: 30}}>
                     <Form text="이름"/>

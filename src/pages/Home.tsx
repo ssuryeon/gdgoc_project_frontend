@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import Button from '../components/Button';
@@ -6,6 +6,8 @@ import Input from '../components/Input';
 import CustomText from '../components/CustomText';
 import LinearGradient, {LinearGradientProps} from 'react-native-linear-gradient';
 import {login} from '../utils/login';
+// import {AuthContext} from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Container = styled(LinearGradient)<LinearGradientProps>`
     width: 100%;
@@ -23,29 +25,39 @@ const Modal = styled.View`
     padding: 30px;
 `;
 
-const Home = () => {
+const Home = ({navigation}) => {
     const theme = useTheme();
     const [id, setId] = useState();
     const [password, setPassword] = useState();
+    // const {accessToken, setAccessToken} = useContext(AuthContext);
 
     const onIdChange = (e) => {
-        const {text} = e;
-        setId(text);
+        const val = e.nativeEvent.text;
+        setId(val);
     }
 
     const onPasswordChange = (e) => {
-        const {text} = e;
-        setPassword(text);
+        const val = e.nativeEvent.text;
+        setPassword(val);
     }
 
-    const onPress = () => {
-        login(id, password)
-            .then(val => {
-                console.log(val);
-            })
-            .catch(err => {
-                console.error(err);
-            })
+    const onPressLogin = async () => {
+        const userInfo = await login(id, password);
+        console.log(userInfo);
+        if(userInfo) {
+            try {
+                await AsyncStorage.setItem('accessToken', userInfo.access_token);
+            } catch(err) {
+                console.error('AsyncStorage 저장 실패: ', err);
+            }
+            const access = await AsyncStorage.getItem('accessToken');
+            console.log(access);
+            navigation.navigate('AfterLoginPage');
+        }
+    }
+
+    const onPressSignUp = () => {
+        navigation.navigate('SignUpPage');
     }
 
     return (
@@ -56,9 +68,9 @@ const Home = () => {
                 <Input style={[styles.input, {marginBottom: 20}]} value={id} onChange={onIdChange}/>
                 <CustomText style={[styles.text, {marginBottom: 10}]}>비밀번호</CustomText>
                 <Input style={[styles.input, {marginBottom: 35}]} value={password} onChange={onPasswordChange}/>
-                <Button style={styles.btn} text="로그인" onPress={onPress} />
+                <Button style={styles.btn} text="로그인" onPress={onPressLogin} />
             </Modal>
-            <Button style={styles.btn} text="회원가입" />
+            <Button style={styles.btn} text="회원가입"onPress={onPressSignUp} />
         </Container>
     )
 }

@@ -27,6 +27,7 @@ const Modal = styled.View`
 
 const Info = styled.View`
     width: 100%;
+    max-height: 100%;
     justify-content: flex-start;
     padding: 0;
     margin-top: 20px;
@@ -38,7 +39,7 @@ const ProfilePage = () => {
         <>
             <Container colors={[theme.inputColor, theme.brandColor]}>
                 <Modal style={styles.shadow}>
-                    <ProfileIcon />
+                    <ProfileIcon  style={{width: 130, height: 130}} iconSize={80}/>
                     <CustomText style={{fontSize: 32, fontWeight: 700}}>hongildong1234</CustomText>
                     <CustomText style={{fontSize: 24, fontWeight: 500, color: theme.grayText}}>랜덤한닉네임</CustomText>
                     <Info>

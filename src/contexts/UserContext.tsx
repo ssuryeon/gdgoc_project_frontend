@@ -19,7 +19,7 @@ interface IUserContext {
     }
 }
 
-const UserContext = createContext<IUserContext>({
+export const UserContext = createContext<IUserContext>({
     state: {
         username: '',
         name: '',
@@ -64,5 +64,3 @@ export const UserProvider = ({children}) => {
         <UserContext.Provider value={value}>{children}</UserContext.Provider>
     )
 }
-
-export default UserContext;

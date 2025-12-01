@@ -3,7 +3,7 @@ import Menu from '../components/Menu';
 import {ScrollView} from 'react-native';
 import {Container} from '../components/Container';
 import {useTheme} from 'styled-components/native';
-// import UserListPage from './UserListPage';
+import UserListPage from './UserListPage';
 import SelectedUserPage from './SelectUserPage';
 
 const SearchPage = () => {

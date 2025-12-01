@@ -1,4 +1,6 @@
+import {useState} from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import CustomText from '../components/CustomText';
 import {useTheme} from 'styled-components/native';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,20 +12,69 @@ interface IMenu {
 
 const Menu = ({status}:IMenu) => {
     const theme = useTheme();
+    const tabNav = useNavigation<any>();
 
+    const [searchColor, setSearchColor] = useState(theme.brandColor);
+    const [chatColor, setChatColor] = useState(theme.brandColor);
+    const [profileColor, setProfileColor] = useState(theme.brandColor);
+    const [chatIcon, setChatIcon] = useState('chatbubble-outline');
+    const [profileIcon, setProfileIcon] = useState('person-outline');
+
+    const onPress = (name) => {
+        if(name == 'search') {
+            setSearchColor(theme.darkpurple);
+            tabNav.navigate('Search');
+        }
+        else if(name == 'chat') {
+            setChatColor(theme.darkpurple);
+            setChatIcon('chatbubble-sharp');
+            tabNav.navigate('Chat');
+        }
+        else if(name == 'profile') {
+            setProfileColor(theme.darkpurple);
+            setProfileIcon('person');
+            tabNav.navigate('Profile')
+        };
+    }
+    // const onPressIn = (name) => {
+    //     if(name == 'search') {
+    //         setSearchColor(theme.darkpurple);
+    //     }
+    //     else if(name == 'chat') {
+    //         setChatColor(theme.darkpurple);
+    //         setChatIcon('chatbubble-sharp');
+    //     }
+    //     else if(name == 'profile') {
+    //         setProfileColor(theme.darkpurple);
+    //         setProfileIcon('person');
+    //     };
+    // }
+    // const onPressOut = (name) => {
+    //     if(name == 'search' && status != 'search') {
+    //         setSearchColor(theme.brandColor);
+    //     }
+    //     else if(name == 'chat' && status != 'chat') {
+    //         setChatColor(theme.brandColor);
+    //         setChatIcon('chatbubble-outline');
+    //     }
+    //     else if(name == 'profile' && status != 'profile') {
+    //         setProfileColor(theme.brandColor);
+    //         setProfileIcon('person-outline');
+    //     };
+    // }
     return (
         <View style={styles.container}>
-            <Pressable style={styles.middleAlign}>
-                <Feather name='search' size={45} color={status == 'search'? theme.darkpurple : theme.brandColor}/>
-                <CustomText style={{color: status == 'search'? theme.darkpurple : theme.brandColor, fontFamily: 'Pretendard-SemiBold', fontSize: 24}}>검색</CustomText>
+            <Pressable style={styles.middleAlign} onPress={() => onPress('search')} >
+                <Feather name='search' size={40} color={searchColor}/>
+                <CustomText style={{color: searchColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>검색</CustomText>
             </Pressable>
-            <Pressable style={styles.middleAlign}>
-                <Ionicons name={status == 'chat'? 'chatbubble-sharp' : 'chatbubble-outline'} size={45} color={status == 'chat'? theme.darkpurple : theme.brandColor}/>
-                <CustomText style={{color: status == 'chat'? theme.darkpurple : theme.brandColor, fontFamily: 'Pretendard-SemiBold', fontSize: 24}}>채팅</CustomText>
+            <Pressable style={styles.middleAlign} onPress={() => onPress('chat')} >
+                <Ionicons name={chatIcon} size={40} color={chatColor}/>
+                <CustomText style={{color: chatColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>채팅</CustomText>
             </Pressable>
-            <Pressable style={styles.middleAlign}>
-                <Ionicons name={status == 'profile'? 'person' : 'person-outline'} size={48} color={status == 'profile'? theme.darkpurple : theme.brandColor}/>
-                <CustomText style={{color: status == 'profile'? theme.darkpurple : theme.brandColor, fontFamily: 'Pretendard-SemiBold', fontSize: 24}}>프로필</CustomText>
+            <Pressable style={styles.middleAlign} onPress={() => onPress('profile')} >
+                <Ionicons name={profileIcon} size={40} color={profileColor}/>
+                <CustomText style={{color: profileColor, fontFamily: 'Pretendard-SemiBold', fontSize: 18}}>프로필</CustomText>
             </Pressable>
         </View>
     )
@@ -32,20 +83,20 @@ const Menu = ({status}:IMenu) => {
 const styles = StyleSheet.create({
     container: {
         width: '100%', 
-        height: 120, 
+        height: 80, 
         backgroundColor: '#fff', 
         flexDirection: 'row',
         paddingLeft: 40,
         paddingRight: 40,
-        paddingTop: 18,
-        paddingBottom: 18,
+        paddingTop: 10,
+        paddingBottom: 10,
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     middleAlign: {
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
 })
 
 export default Menu;
