@@ -7,6 +7,7 @@ const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
 const PROTO_PATH = __dirname + '/src/grpcfiles/proto/user.proto';
+const PROTO_PATH2 = __dirname + '/src/grpcfiles/proto/chat.proto'
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
@@ -18,7 +19,9 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 
 const proto = grpc.loadPackageDefinition(packageDefinition);
 const userPkg = proto.user.v1;
-const GRPC_SERVER_ADDR = '34.22.69.10:50051';
+const HOST = '34.22.69.10';
+const PORT1 = '50051'
+const GRPC_SERVER_ADDR = `${HOST}:${PORT1}`;
 const userClient = new userPkg.UserService(
   GRPC_SERVER_ADDR,
   grpc.credentials.createInsecure(),

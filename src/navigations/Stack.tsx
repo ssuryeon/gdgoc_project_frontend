@@ -5,6 +5,7 @@ import AfterLoginPage from '../pages/AfterLoginPage';
 import ModifyPage from '../pages/ModifyPage';
 import ProfilePage from '../pages/ProfilePage';
 import ChattingPage from '../pages/ChattingPage';
+import ChatListPage from '../pages/ChatListPage';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const StackNavigation = () => {
             <Stack.Screen name="ModifyPage" component={ModifyPage} options={{headerShown: false}}/>
             <Stack.Screen name="ProfilePage" component={ProfilePage} options={{headerShown: false}}/>
             <Stack.Screen name="ChattingPage" component={ChattingPage} options={{headerShown: false}}/>
+            <Stack.Screen name="ChatListPage" component={ChatListPage} options={{headerShown: false}}/>
         </Stack.Navigator>
     )
 }

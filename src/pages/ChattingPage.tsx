@@ -54,10 +54,13 @@ const ChatInput = styled.TextInput`
     border-radius: 30px;
     border: none;
     background-color: #fff;
+    padding-left: 15px;
+    font-size: 20px;
 `;
 
 const InsertChat = () => {
     const theme = useTheme();
+    
     return (
         <View style={{flexDirection: 'row', backgroundColor: theme.brandColor, padding: 10}}>
             <ChatInput />
@@ -69,12 +72,27 @@ const InsertChat = () => {
 }
 
 
-const ChattingPage = () => {
+const ChattingPage = ({navigation, route}) => {
     const theme = useTheme();
+    const onPress = () => {
+        if(route.params.from == 'SelectUserPage') {
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'AfterLoginPage',
+                    params: {screen: 'Chat'}
+                }]
+            })
+        }
+        else {
+            navigation.pop();
+        }
+    }
+
     return (
         <>
-            <Header text="youngsukim12"/>
-            <Pressable style={{position: 'absolute', top: '5%', left: 10, transform: 'translateY(-20px)'}}><Ionicons name='chevron-back-outline' size={45} color='#fff'/></Pressable>
+            <Header text={route.params.nickname}/>
+            <Pressable style={{position: 'absolute', top: '5%', left: 5, transform: 'translateY(-20px)'}} onPress={onPress}><Ionicons name='chevron-back-outline' size={45} color='#fff'/></Pressable>
             <ScrollView style={{width: '100%', height: '90%'}}>
                 <Container style={{backgroundColor: theme.inputColor, padding: 20, justifyContent: 'flex-start', minHeight: '100%'}}>
                     <View style={{width: '100%', height: '100%', paddingRight: 40}}>
