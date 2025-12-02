@@ -24,18 +24,19 @@ const SearchInput = styled.TextInput`
 
 interface IUserModal {
     text: string,
+    onPress?: () => void,
 }
 
-const UserModal = ({text}:IUserModal) => {
+const UserModal = ({text, onPress}:IUserModal) => {
     return (
-        <View style={styles.usermodal}>
+        <Pressable style={styles.usermodal} onPress={onPress}>
             <ProfileIcon style={{width: 54, height: 54, marginRight: 10, transform: 'translateY(10%)'}} iconSize={30}/>
             <CustomText style={{fontSize: 24, fontFamily: 'Pretendard-SemiBold'}}>{text}</CustomText>
-        </View>
+        </Pressable>
     )
 }
 
-const UserListPage = () => {
+const UserListPage = ({navigation}) => {
     const theme = useTheme();
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
@@ -67,7 +68,7 @@ const UserListPage = () => {
                 <SearchInput placeholder="유저 검색" value={value} onChange={onChange}/><Pressable style={{position: 'absolute', right: 15, top: '50%', transform: 'translateY(-30%)'}}><Feather name='search' size={45} color={theme.grayText}/></Pressable>
             </View>
             {users.map((user) => (
-                <UserModal text={user.username} key={user.id}/>
+                <UserModal text={user.username} key={user.id} onPress={() => navigation.navigate('SelectUserPage')}/>
             ))}
         </View>
     );
