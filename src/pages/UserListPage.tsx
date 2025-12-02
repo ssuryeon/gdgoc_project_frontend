@@ -1,4 +1,4 @@
-import {View, Pressable, StyleSheet} from 'react-native';
+import {View, Pressable, StyleSheet, ScrollView} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import ProfileIcon from '../components/ProfileIcon';
 import CustomText from '../components/CustomText';
@@ -63,13 +63,15 @@ const UserListPage = ({navigation}) => {
     }, [value])
 
     return (
-        <View style={{width: '100%'}}>
-            <View style={{flexDirection: 'row', width: '100%', padding: 0, position: 'relative'}}>
-                <SearchInput placeholder="유저 검색" value={value} onChange={onChange}/><Pressable style={{position: 'absolute', right: 15, top: '50%', transform: 'translateY(-30%)'}}><Feather name='search' size={45} color={theme.grayText}/></Pressable>
-            </View>
-            {users.map((user) => (
-                <UserModal text={user.username} key={user.id} onPress={() => navigation.navigate('SelectUserPage')}/>
-            ))}
+        <View style={{width: '100%', backgroundColor: theme.inputColor, padding: 15, justifyContent: 'flex-start', minHeight: '100%', flex: 1}}>
+            <ScrollView style={{width: '100%', height: '100%'}}>
+                <View style={{flexDirection: 'row', width: '100%', padding: 0, position: 'relative'}}>
+                    <SearchInput placeholder="유저 검색" value={value} onChange={onChange}/><Pressable style={{position: 'absolute', right: 15, top: '50%', transform: 'translateY(-30%)'}}><Feather name='search' size={45} color={theme.grayText}/></Pressable>
+                </View>
+                {users.map((user) => (
+                    <UserModal text={user.username} key={user.id} onPress={() => navigation.navigate('SelectUserPage', {username: user.username, nickname: user.nickname})}/>
+                ))}
+             </ScrollView>
         </View>
     );
 }
