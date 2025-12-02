@@ -3,6 +3,9 @@ import ProfileIcon from '../components/ProfileIcon';
 import CustomText from '../components/CustomText';
 import Button from '../components/Button';
 import {View} from 'react-native';
+import {getRoomId} from '../utils/chat';
+import {useContext} from 'react';
+import {UserContext} from '../contexts/UserContext';
 
 const Modal = styled.View`
     width: 100%;
@@ -16,6 +19,11 @@ const Modal = styled.View`
 
 const SelectedUserPage = ({navigation, route}) => {
     const theme = useTheme();
+    const {state} = useContext(UserContext);
+    const onPress = () => {
+        console.log(state);
+        navigation.navigate('ChattingPage', {nickname: route.params.nickname, from: 'SelectUserPage'});
+    }
     
     return (
         <View style={{width: '100%', backgroundColor: theme.inputColor, padding: 15, justifyContent: 'flex-start', minHeight: '100%', flex: 1}}>
@@ -25,7 +33,7 @@ const SelectedUserPage = ({navigation, route}) => {
                 <CustomText style={{fontSize: 18, fontFamily: 'Pretendard-Medium', color: theme.grayText, marginBottom: 100}}>{route.params.username}</CustomText>
                 <View style={{flexDirection: 'row', width: '100%'}}>
                     <Button text="취소하기" style={{height: 52, marginRight: 20, flex: 1}} textStyle={{fontSize: 20}} onPress={() => navigation.pop()}/>
-                    <Button text="채팅하기" style={{height: 52, flex: 1}} textStyle={{fontSize: 20} } onPress={() => navigation.navigate('ChattingPage', {nickname: route.params.nickname, from: 'SelectUserPage'})}/>
+                    <Button text="채팅하기" style={{height: 52, flex: 1}} textStyle={{fontSize: 20} } onPress={onPress}/>
                 </View>
             </Modal>
         </View>

@@ -16,16 +16,36 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     defaults: true,
     oneofs: true,
 });
+const packageDefinition2 = protoLoader.loadSync(PROTO_PATH2, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true,
+});
 
 const proto = grpc.loadPackageDefinition(packageDefinition);
+const proto2 = grpc.loadPackageDefinition(packageDefinition2);
+
 const userPkg = proto.user.v1;
+const chatPkg = proto2.chat.v1;
+
 const HOST = '34.22.69.10';
-const PORT1 = '50051'
+
+const PORT1 = '50051';
+const PORT2 = '50052';
+
 const GRPC_SERVER_ADDR = `${HOST}:${PORT1}`;
+const GRPC_SERVER_ADDR2 = `${HOST}:${PORT2}`;
+
 const userClient = new userPkg.UserService(
   GRPC_SERVER_ADDR,
   grpc.credentials.createInsecure(),
 );
+const chatClient = new chatPkg.ChatService(
+    GRPC_SERVER_ADDR2,
+    grpc.credentials.createInsecure(),
+  );
 
 const app = express();
 app.use(cors());
@@ -35,6 +55,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'serverindex.html'));
 })
 
+// UserService
 app.post('/signup/username', (req, res) => {
     const {username} = req.body;
     if(!username) {
@@ -221,6 +242,26 @@ app.post('/search', (req, res) => {
         }
         const val = res.json(response);
         console.log('SearchUsers 응답: ', val);
+        return val;
+    })
+})
+
+// ChatService
+app.post('/chat/getid', (req, res) => {
+    const {my_id, other_id} = req.body;
+    const info = {my_id, other_id};
+    if(!my_id || !other_id) {
+        return res.status(400).json({error: 'username이 입력되지 않았습니다.'});
+    }
+    chatClient.GetRoomID(info, (err, response) => {
+        if(err) {
+            console.error('gRPC GetRoomID error: ', err);
+            return res
+            .status(500)
+            .json({ error: 'gRPC GetRoomID 실패', detail: err.message });
+        }
+        const val = res.json(response);
+        console.log('GetRoomID 응답: ', val);
         return val;
     })
 })
