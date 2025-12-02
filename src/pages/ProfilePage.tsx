@@ -37,7 +37,7 @@ const Info = styled.View`
     margin-top: 20px;
 `;
 
-interface IUser {
+export interface IUser {
     username: string,
     name: string,
     nickname: string,

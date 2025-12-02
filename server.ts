@@ -196,6 +196,32 @@ app.post('/profile/modify', (req, res) => {
     }
 })
 
+app.post('/search', (req, res) => {
+    const body = req.body;
+    console.log('req body: ', body)
+    const {query, limit, offset} = body;
+    const token = req.headers.authorization;
+    const info = {query, limit, offset};
+    const metadata = new grpc.Metadata();
+    metadata.add('authorization', token);
+    
+    if(query == null || limit == null || offset == null) { // * 값이 0이면 !offset이 true로 처리됨
+        return res.status(400).json({error: 'API 파라미터 오류'});
+    }
+    userClient.SearchUsers(info, metadata, (err, response) => {
+        console.log('SearchUsers 시작');
+        if(err) {
+            console.error('gRPC SearchUsers error: ', err);
+            return res
+            .status(500)
+            .json({ error: 'gRPC SearchUsers 실패', detail: err.message });
+        }
+        const val = res.json(response);
+        console.log('SearchUsers 응답: ', val);
+        return val;
+    })
+})
+
 const PORT = 4000;
 app.listen(PORT, () => {
     console.log(`BFF Server Strat: http://localhost:${PORT}`);

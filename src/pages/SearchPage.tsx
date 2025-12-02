@@ -8,11 +8,12 @@ import SelectedUserPage from './SelectUserPage';
 
 const SearchPage = () => {
     const theme = useTheme();
+
     return (
         <>
             <Header text="유저 검색"/>
             <ScrollView style={{width: '100%', height: '90%'}}>
-                <Container style={{backgroundColor: theme.inputColor, padding: 15, justifyContent: 'flex-start', minHeight: '100%'}}>
+                <Container style={{backgroundColor: theme.inputColor, padding: 15, justifyContent: 'flex-start', minHeight: '100%', flex: 1}}>
                     <UserListPage />
                 </Container>
             </ScrollView>

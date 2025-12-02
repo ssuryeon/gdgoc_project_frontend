@@ -6,6 +6,8 @@ import Input from '../components/Input';
 import CustomText from '../components/CustomText';
 import LinearGradient, {LinearGradientProps} from 'react-native-linear-gradient';
 import {login} from '../utils/login';
+import {useContext} from 'react';
+import {UserContext} from '../contexts/UserContext';
 // import {AuthContext} from '../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,7 +28,16 @@ const Modal = styled.View`
 `;
 
 const Home = ({navigation}) => {
+    const {state, actions} = useContext(UserContext);
     useEffect(() => {
+        actions.setName('');
+        actions.setUsername('');
+        actions.setNickname('');
+        actions.setPhone('');
+        actions.setEmail('');
+        actions.setPassword('');
+        actions.setAvatarUrl('');
+
         const checkToken = async () => {
             try {
                 const token = await AsyncStorage.getItem('accessToken');
@@ -55,6 +66,13 @@ const Home = ({navigation}) => {
     const onPressLogin = async () => {
         const userInfo = await login(id, password);
         console.log(userInfo);
+        actions.setName(userInfo.name);
+        actions.setUsername(userInfo.username);
+        actions.setPassword(userInfo.password);
+        actions.setPhone(userInfo.phone);
+        actions.setEmail(userInfo.email);
+        console.log(state);
+
         if(userInfo) {
             try {
                 await AsyncStorage.setItem('accessToken', userInfo.access_token);

@@ -20,7 +20,7 @@ const VerifyText = styled.Text`
 `;
 
 const BtnForm = ({text, defaultVal}:IForm) => {
-    const {actions} = useContext(UserContext);
+    const {actions, state} = useContext(UserContext);
     const [value, setValue] = useState(defaultVal ?? '');
     const [available, setAvailable] = useState(false);
     const onChange = (e) => {
@@ -38,6 +38,7 @@ const BtnForm = ({text, defaultVal}:IForm) => {
                 actions.setEmail(val);
                 break;
         }
+        console.log('state 변화: ', state);
     }
     
     const onPress = async () => {
