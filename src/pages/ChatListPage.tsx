@@ -5,6 +5,9 @@ import styled, {useTheme} from 'styled-components/native';
 import Menu from '../components/Menu';
 import ProfileIcon from '../components/ProfileIcon';
 import CustomText from '../components/CustomText';
+import {getMyRooms} from '../utils/chat';
+import {useEffect, useContext, useState} from 'react';
+import {UserContext} from '../contexts/UserContext';
 
 const Modal = styled.View`
     width: 100%;
@@ -33,6 +36,7 @@ interface IUserChatItem {
 }
 
 const UserChatItem = ({isread, userId, content}:IUserChatItem) => {
+    
     return (
         <Modal style={{boxShadow: "0 4 10 0 rgba(132, 132, 132, 0.25)"}}>
             <View style={{alignItems: 'center', justifyContent: 'center', height: '100%', marginRight: 15, padding: 0, position: 'relative'}}>
@@ -49,6 +53,19 @@ const UserChatItem = ({isread, userId, content}:IUserChatItem) => {
 
 const ChatListPage = () => {
     const theme = useTheme();
+    const {state} = useContext(UserContext);
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const getRooms = async () => {
+            console.log(state.username);
+            const result = await getMyRooms(state.username);
+            console.log('getrooms: ', result);
+        }
+
+        getRooms();
+        
+    }, [])
     return (
         <>
             <Header text="채팅 목록"/>

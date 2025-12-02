@@ -378,6 +378,25 @@ wss.on('connection', (ws, req) => {
 //     res.json({status: 'ended'});
 // })
 
+app.post('/chat/rooms', (req, res) => {
+    const {user_id} = req.body;
+    console.log('getMyRooms username: ', user_id);
+    if(!user_id) {
+        return res.status(400).json({error: 'username이 입력되지 않았습니다.'});
+    }
+    chatClient.GetRoomID({user_id}, (err, response) => {
+        if(err) {
+            console.error('gRPC GetMyRooms error: ', err);
+            return res
+            .status(500)
+            .json({ error: 'gRPC GetMyRooms 실패', detail: err.message });
+        }
+        const val = res.json(response);
+        console.log('GetMyRooms 응답: ', val);
+        return val;
+    })
+})
+
 const PORT = 4000;
 server.listen(PORT, () => {
     console.log(`BFF Server Strat: http://localhost:${PORT}`);
