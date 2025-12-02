@@ -1,8 +1,9 @@
 const BFFURL = 'http://localhost:4000';
 
 export async function getRoomId(my_id, other_id) {
+    console.log('>>> getRoomId start');
     console.log(my_id, other_id);
-    const res = await fetch(`${BFFURL}/home/login`, {
+    const res = await fetch(`${BFFURL}/chat/getid`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({my_id, other_id}),

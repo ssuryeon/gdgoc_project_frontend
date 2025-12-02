@@ -5,6 +5,8 @@ import {Container} from '../components/Container';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProfileIcon from '../components/ProfileIcon';
 import CustomText from '../components/CustomText';
+import {useEffect, useState, useRef, useContext} from 'react';
+import {UserContext} from '../contexts/UserContext';
 
 const Triangle = styled.View`
     border-left-width: 15px;
@@ -58,13 +60,13 @@ const ChatInput = styled.TextInput`
     font-size: 20px;
 `;
 
-const InsertChat = () => {
+const InsertChat = ({value, onChange, onPress}) => {
     const theme = useTheme();
     
     return (
         <View style={{flexDirection: 'row', backgroundColor: theme.brandColor, padding: 10}}>
-            <ChatInput />
-            <Pressable style={[styles.inputBtn, {backgroundColor: theme.darkpurple}]}>
+            <ChatInput value={value} onChange={onChange}/>
+            <Pressable style={[styles.inputBtn, {backgroundColor: theme.darkpurple}]} onPress={onPress}>
                 <Ionicons name="arrow-up" size={35} color="#fff"/>
             </Pressable>
         </View>
@@ -74,6 +76,11 @@ const InsertChat = () => {
 
 const ChattingPage = ({navigation, route}) => {
     const theme = useTheme();
+    const [chats, setChats] = useState([]);
+    const [value, setValue] = useState('');
+    const wsRef = useRef<WebSocket | null>(null);
+    const {state} = useContext(UserContext);
+
     const onPress = () => {
         if(route.params.from == 'SelectUserPage') {
             navigation.reset({
@@ -89,6 +96,62 @@ const ChattingPage = ({navigation, route}) => {
         }
     }
 
+    useEffect(() => {
+        const ws = new WebSocket('ws://localhost:4000/ws/chat');
+
+        ws.onopen = () => {
+            console.log('클라이언트 websocket 연결 성공');
+            ws.send(JSON.stringify({type: 'join', roomid: route.params.roomid, username: route.params.username, message: 'init'}));
+            
+        }
+
+        ws.onmessage = (e) => {
+            try {
+                const message = JSON.parse(e.data);
+                console.log('서버 메시지: ', message);
+                if(!message.message || message.message == 'init' || message.message == '') return;
+                else setChats(prev => [...prev, {...message}]);
+            } catch(err) {
+                console.error('메시지 받기 에러');
+            }
+        }
+
+        ws.onerror = (error) => {
+            console.error('error: ', error);
+        }
+
+        ws.onclose = (e) => {
+            console.log('종료됨: ', e.code, e.reason);
+            console.log('웹소켓 연결 종료');
+        }
+
+        wsRef.current = ws;
+        return () => {
+            ws.close();
+        };
+
+    }, []);
+
+    useEffect(() => {
+        console.log(chats);
+    }, [chats]);
+
+    const onChange = (e) => {
+        const v = e.nativeEvent.text;
+        setValue(v);
+    }
+
+    const sendMessage = () => {
+        if(!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+            console.log('웹소켓이 존재하지 않습니다.');
+            return;
+        }
+        const chatMessage = {type: 'message', roomid: route.params.roomid, username: state.username, message: value};
+        // setChats(prev => [...prev, {...chatMessage}]);
+        wsRef.current.send(JSON.stringify(chatMessage));
+        setValue('');
+    }
+
     return (
         <>
             <Header text={route.params.nickname}/>
@@ -96,12 +159,13 @@ const ChattingPage = ({navigation, route}) => {
             <ScrollView style={{width: '100%', height: '90%'}}>
                 <Container style={{backgroundColor: theme.inputColor, padding: 20, justifyContent: 'flex-start', minHeight: '100%'}}>
                     <View style={{width: '100%', height: '100%', paddingRight: 40}}>
-                        <OtherChat text='안녕하세요'/>
-                        <MyChat text="안녕하세요"/>
+                        {chats.filter(chat => chat.message.message == 'init' || chat.message.message == null || chat.message.message =='').map((chat, idx) => (
+                            chat.username == route.params.username ? <OtherChat text={chat.message} key={idx}/> : <MyChat text={chat.message} key={idx}/>
+                        ))}
                     </View>
                 </Container>
             </ScrollView>
-            <InsertChat />
+            <InsertChat value={value} onChange={onChange} onPress={sendMessage}/>
         </>
     );
 }

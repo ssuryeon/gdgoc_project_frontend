@@ -20,9 +20,12 @@ const Modal = styled.View`
 const SelectedUserPage = ({navigation, route}) => {
     const theme = useTheme();
     const {state} = useContext(UserContext);
-    const onPress = () => {
+    const onPress = async () => {
         console.log(state);
-        navigation.navigate('ChattingPage', {nickname: route.params.nickname, from: 'SelectUserPage'});
+        const res = await getRoomId(state.username, route.params.username);
+        console.log(res);
+        const roomId = res.room_id;
+        navigation.navigate('ChattingPage', {nickname: route.params.nickname, from: 'SelectUserPage', roomid: roomId, username: route.params.username});
     }
     
     return (

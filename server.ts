@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 
+const WebSocket = require('ws');
+const http = require('http');
 const path = require('path');
 const bodyParser = require('body-parser');
 const grpc = require('@grpc/grpc-js');
@@ -45,7 +47,7 @@ const userClient = new userPkg.UserService(
 const chatClient = new chatPkg.ChatService(
     GRPC_SERVER_ADDR2,
     grpc.credentials.createInsecure(),
-  );
+);
 
 const app = express();
 app.use(cors());
@@ -266,7 +268,117 @@ app.post('/chat/getid', (req, res) => {
     })
 })
 
+const calls = new Map();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({server, path: '/ws/chat'});
+
+wss.on('connection', (ws, req) => {
+    console.log('webSocket 연결');
+    let call = null;
+
+    // 클라이언트에서 메시지가 올 때
+    ws.on('message', data => {
+        const msg = JSON.parse(data.toString());
+        console.log('받은 메시지: ', msg);
+        const {type, roomid, username, message} = msg;
+        if(type == 'join') {
+            call = chatClient.JoinChat();
+            
+            if(!call) return;
+
+            // 초기 메시지
+            call.write({roomid, username, message});
+            console.log(`Joined Chat: (${roomid}) ${username}`);
+
+            // grpc 서버로부터의 메시지 수신 후 클라이언트로 보냄
+            call.on('data', (message) => {
+                console.log('수신된 메시지: ', message);
+                ws.send(JSON.stringify(message));
+            })
+
+            // grpc 서버와의 통신이 끝났을 때 클라이언트에게 끝남을 알리는 메시지를 보냄
+            call.on('end', () => {
+                console.log('grpc-BFF 서버 간 스트리밍 종료');
+                ws.send(JSON.stringify({type: 'end'}));
+                ws.close();
+            })
+
+            call.on('error', (error) => {
+                console.error('grpc-BFF 통신 에러: ', error);
+            })
+        } else if(type == 'message') {
+            if(!call) {
+                console.error('메시지를 먼저 호출해주세요.');
+                return;
+            }
+
+            // 클라이언트의 메시지를 grpc 서버로 전달
+            call.write({roomid, username, message});
+        }
+
+    })
+
+    ws.on('close', () => {
+        console.log('웹소켓 연결 종료');
+    })
+
+    ws.on('error', (error) => {
+        console.log('웹소켓 에러: ', error);
+    })
+})
+
+// app.post('/chat/join', (req, res) => {
+//     const {roomid, username} = req.body;
+//     const message = "init";
+//     const chatMessage = {roomid, username, message};
+
+//     const call = chatClient.JoinChat();
+//     calls.set(username, call);
+
+//     call.write(chatMessage);
+//     console.log(`Joined Chat: (${roomid}) ${username}`);
+
+//     call.on('data', message => {
+//         console.log(`[${message.username}]: ${message.message}`);
+//         res.json({username: message.username, message: message.message});
+//     })
+
+//     call.on('error', error => {
+//         console.error('Chatting error: ', error);
+//         calls.delete(username);
+//         res.json({error: 'Chatting error', detail: error.message});
+//     })
+
+//     call.on('end', () => {
+//         calls.delete(username);
+//     })
+
+// })
+
+// app.post('/chat/send', (req, res) => {
+//     const {roomid, username, message} = req.body;
+//     const chatMessage = {roomid, username, message};
+//     const call = calls.get(username);
+//     if(!call) {
+//         console.error('스트림이 존재하지 않습니다.');
+//     }
+
+//     call.write(chatMessage);
+//     res.json({username, message});
+// })
+
+// app.post('/chat/end', (req, res) => {
+//     const {roomid, username} = req.body;
+//     const call = calls.get(username);
+//     if(!call) {
+//         console.error('스트림이 존재하지 않습니다.');
+//     }
+
+//     call.end();
+//     res.json({status: 'ended'});
+// })
+
 const PORT = 4000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`BFF Server Strat: http://localhost:${PORT}`);
 })

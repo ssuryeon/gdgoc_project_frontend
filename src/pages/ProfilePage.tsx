@@ -62,21 +62,32 @@ const ProfilePage = ({navigation}) => {
                 const token = await AsyncStorage.getItem('accessToken');
                 console.log(token);
                 const info = await getProfile(token);
-                console.log(info);
+                console.log('getProfile 결과: ', info);
                 setUser(info.user);
             } catch(e) {
                 console.error('getInfo 에러: ', e);
             } finally { //getInfo가 끝난 뒤 수행되는 구문
                 setLoading(false);
-                console.log('ProfilePage: ', user);
-                actions.setNickname(user.nickname);
-                actions.setAvatarUrl(user.avatar_url);
             }
         }
         getInfo();
     }, []);
 
+    useEffect(() => {
+        if(!user) return;
+        console.log('ProfilePage: ', user);
+        actions.setNickname(user.nickname);
+        actions.setAvatarUrl(user.avatar_url);
+    }, [user])
+
     const onPress = () => {
+        actions.setName('');
+        actions.setUsername('');
+        actions.setNickname('');
+        actions.setPhone('');
+        actions.setEmail('');
+        actions.setPassword('');
+        actions.setAvatarUrl('');
         navigation.navigate('Home');
         AsyncStorage.removeItem('accessToken');
     }
