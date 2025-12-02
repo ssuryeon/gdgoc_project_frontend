@@ -6,7 +6,7 @@ import BtnForm from '../components/BtnForm';
 import {Container} from '../components/Container';
 import {signUp} from '../utils/signupUser';
 import {useContext, useState} from 'react';
-import UserContext from '../contexts/UserContext';
+import {UserContext} from '../contexts/UserContext';
 import ConfirmForm from '../components/ConfirmForm';
 
 const SignUpPage = ({navigation}) => {
@@ -20,7 +20,8 @@ const SignUpPage = ({navigation}) => {
         }
         else {
             console.log(state);
-            const user = await signUp(state);
+            const info = {username: state.username, name: state.name, phone: state.phone, password: state.password, email: state.email};
+            const user = await signUp(info);
             console.log(user);
         }
     }

@@ -13,7 +13,7 @@ const SearchPage = () => {
             <Header text="유저 검색"/>
             <ScrollView style={{width: '100%', height: '90%'}}>
                 <Container style={{backgroundColor: theme.inputColor, padding: 15, justifyContent: 'flex-start', minHeight: '100%'}}>
-                    <SelectedUserPage />
+                    <UserListPage />
                 </Container>
             </ScrollView>
             <Menu status="search" />

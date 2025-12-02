@@ -125,6 +125,77 @@ app.post('/home/login', (req, res) => {
     })
 })
 
+app.post('/profile', (req, res) => {
+    try {
+        console.log('>>> start');
+        const {user_id} = req.body;
+        const token = req.headers.authorization;
+        console.log(user_id);
+        console.log(token);
+        console.log('grpc type: ', typeof(grpc));
+        console.log('grpc keys:', Object.keys(grpc));
+        console.log('grpc.Metadata:', grpc.Metadata);
+
+        if(!token) {
+            console.log('token error');
+            return res.status(400).json({error: '토큰 오류'});
+        }
+        const metadata = new grpc.Metadata();
+        metadata.add('authorization', token);
+        console.log('헤더: ', metadata.getMap());
+        console.log('metadata authorization: ', metadata.get('authorization'))
+
+        userClient.GetProfile({user_id}, metadata, (err, response) => {
+            console.log('>>> GetProfile 콜백 진입');
+            if(err) {
+                console.error('gRPC Profile error: ', err);
+                return res
+                .status(500)
+                .json({ error: 'gRPC Profile 실패', detail: err.message });
+            }
+            const val = res.json(response);
+            console.log('GetProfile 응답: ', val);
+            return val;
+        })
+    } catch(e) {
+        console.log('라우팅 에러: ', e);
+    }
+})
+
+app.post('/profile/modify', (req, res) => {
+    try {
+        console.log('>>> start');
+        const {values} = req.body;
+        const token = req.headers.authorization;
+        console.log(values);
+        console.log(token);
+
+        if(!token) {
+            console.log('token error');
+            return res.status(400).json({error: '토큰 오류'});
+        }
+        const metadata = new grpc.Metadata();
+        metadata.add('authorization', token);
+        console.log('헤더: ', metadata.getMap());
+        console.log('metadata authorization: ', metadata.get('authorization'))
+
+        userClient.UpdateProfile({values}, metadata, (err, response) => {
+            console.log('>>> UpdateProfile 콜백 진입');
+            if(err) {
+                console.error('gRPC UpdateProfile error: ', err);
+                return res
+                .status(500)
+                .json({ error: 'gRPC UpdateProfile 실패', detail: err.message });
+            }
+            const val = res.json(response);
+            console.log('UpdateProfile 응답: ', val);
+            return val;
+        })
+    } catch(e) {
+        console.log('라우팅 에러: ', e);
+    }
+})
+
 const PORT = 4000;
 app.listen(PORT, () => {
     console.log(`BFF Server Strat: http://localhost:${PORT}`);

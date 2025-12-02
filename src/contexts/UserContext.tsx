@@ -9,6 +9,8 @@ interface IUserContext {
         phone: string,
         email: string,
         password: string,
+        nickname: string,
+        avatar_url: string,
     },
     actions: {
         setUsername: Setter,
@@ -16,6 +18,8 @@ interface IUserContext {
         setPhone: Setter,
         setEmail: Setter,
         setPassword: Setter,
+        setNickname: Setter,
+        setAvatarUrl: Setter,
     }
 }
 
@@ -26,6 +30,8 @@ export const UserContext = createContext<IUserContext>({
         phone: '',
         email: '',
         password: '',
+        nickname: '',
+        avatar_url: '',
     },
     actions: {
         setUsername: () => {},
@@ -33,6 +39,8 @@ export const UserContext = createContext<IUserContext>({
         setPhone: () => {},
         setEmail: () => {},
         setPassword: () => {},
+        setNickname: () => {},
+        setAvatarUrl: () => {},
     }    
 })
 
@@ -42,6 +50,8 @@ export const UserProvider = ({children}) => {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [avatar_url, setAvatarUrl] = useState('');
 
     const value:IUserContext = {
         state: {
@@ -50,6 +60,8 @@ export const UserProvider = ({children}) => {
             phone,
             email,
             password,
+            nickname,
+            avatar_url,
         },
         actions: {
             setUsername,
@@ -57,6 +69,8 @@ export const UserProvider = ({children}) => {
             setPhone,
             setEmail,
             setPassword,
+            setNickname,
+            setAvatarUrl,
         }
     };
 

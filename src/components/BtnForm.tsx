@@ -3,12 +3,13 @@ import Button from './Button';
 import CustomText from './CustomText';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
-import {useContext, useState, useEffect} from 'react';
+import {useContext, useState} from 'react';
 import {UserContext} from '../contexts/UserContext';
 import {checkUsername, checkEmail, checkPhone} from '../utils/signupUser';
 
 interface IForm {
     text: string,
+    defaultVal?: string,
 }
 
 const VerifyText = styled.Text`
@@ -18,9 +19,9 @@ const VerifyText = styled.Text`
     margin-top: 10px;
 `;
 
-const BtnForm = ({text}:IForm) => {
-    const {state, actions} = useContext(UserContext);
-    const [value, setValue] = useState('');
+const BtnForm = ({text, defaultVal}:IForm) => {
+    const {actions} = useContext(UserContext);
+    const [value, setValue] = useState(defaultVal ?? '');
     const [available, setAvailable] = useState(false);
     const onChange = (e) => {
         const val = e.nativeEvent.text
@@ -47,10 +48,10 @@ const BtnForm = ({text}:IForm) => {
                 setAvailable(usernameRes);
                 break;
             case '전화번호':
-                // const phoneResult = await checkPhone(value);
-                // if(phoneResult != 'error') {
-                //     available = true;
-                // }
+                const phoneResult = await checkPhone(value);
+                if(phoneResult != 'error') {
+                    console.log(phoneResult);
+                }
                 break;
             case '이메일':
                 const emailRes = await checkEmail(value);

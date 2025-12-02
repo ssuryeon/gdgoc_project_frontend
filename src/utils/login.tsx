@@ -19,7 +19,6 @@ export async function login(username, password) {
     console.log(data);
     if (!data) {
         throw new Error('BFF invalid response');
-        return;
     }
     return data;
 }
