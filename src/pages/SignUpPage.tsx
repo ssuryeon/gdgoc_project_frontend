@@ -23,6 +23,7 @@ const SignUpPage = ({navigation}) => {
             const info = {username: state.username, name: state.name, phone: state.phone, password: state.password, email: state.email};
             const user = await signUp(info);
             console.log(user);
+            navigation.pop();
         }
     }
 

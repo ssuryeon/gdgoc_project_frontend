@@ -3,7 +3,8 @@ import styled, {useTheme} from 'styled-components/native';
 import ProfileIcon from '../components/ProfileIcon';
 import CustomText from '../components/CustomText';
 import Feather from 'react-native-vector-icons/Feather';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
+import {UserContext} from '../contexts/UserContext';
 import {searchUsers} from '../utils/search';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -41,6 +42,7 @@ const UserListPage = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [users, setUsers] = useState([]);
     const [value, setValue] = useState('');
+    const {state} = useContext(UserContext);
 
     const onChange = (e) => {
         const t = e.nativeEvent.text;
@@ -68,7 +70,7 @@ const UserListPage = ({navigation}) => {
                 <View style={{flexDirection: 'row', width: '100%', padding: 0, position: 'relative'}}>
                     <SearchInput placeholder="유저 검색" value={value} onChange={onChange}/><Pressable style={{position: 'absolute', right: 15, top: '50%', transform: 'translateY(-30%)'}}><Feather name='search' size={45} color={theme.grayText}/></Pressable>
                 </View>
-                {users.map((user) => (
+                {users.filter(user => user.username != state.username).map((user) => (
                     <UserModal text={user.username} key={user.id} onPress={() => navigation.navigate('SelectUserPage', {username: user.username, nickname: user.nickname})}/>
                 ))}
              </ScrollView>

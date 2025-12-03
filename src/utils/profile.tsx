@@ -26,7 +26,7 @@ export async function getProfile(user_id) {
 export async function updateProfile(user_id, values) {
     console.log(user_id);
     console.log(values);
-    const res = await fetch(`${BFFURL}/profile`, {
+    const res = await fetch(`${BFFURL}/profile/modify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
