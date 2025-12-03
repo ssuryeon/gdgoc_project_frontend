@@ -94,7 +94,7 @@ const Home = ({navigation}) => {
 
     return (
         <Container colors={[theme.brandColor, theme.brandColor2]}>
-            <CustomText style={[styles.logo, {marginBottom: 100}]}>Logo</CustomText>
+            <CustomText style={[styles.logo, {marginBottom: 100}]}>채팅오분전</CustomText>
             <Modal style={{marginBottom: 20}}>
                 <CustomText style={[styles.text, {marginBottom: 10}]}>아이디</CustomText>
                 <Input style={[styles.input, {marginBottom: 20}]} value={id} onChange={onIdChange}/>
