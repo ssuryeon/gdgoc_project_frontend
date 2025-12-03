@@ -384,7 +384,7 @@ app.post('/chat/rooms', (req, res) => {
     if(!user_id) {
         return res.status(400).json({error: 'username이 입력되지 않았습니다.'});
     }
-    chatClient.GetRoomID({user_id}, (err, response) => {
+    chatClient.GetMyRooms({user_id}, (err, response) => {
         if(err) {
             console.error('gRPC GetMyRooms error: ', err);
             return res

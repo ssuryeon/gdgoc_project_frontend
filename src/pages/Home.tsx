@@ -10,6 +10,7 @@ import {useContext} from 'react';
 import {UserContext} from '../contexts/UserContext';
 // import {AuthContext} from '../contexts/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getProfile} from '../utils/profile';
 
 const Container = styled(LinearGradient)<LinearGradientProps>`
     width: 100%;
@@ -33,7 +34,15 @@ const Home = ({navigation}) => {
         const checkToken = async () => {
             try {
                 const token = await AsyncStorage.getItem('accessToken');
-                if(token) navigation.navigate('AfterLoginPage');
+                if(token) {
+                    const userInfo = await getProfile(token);
+                    actions.setUsername(userInfo.username);
+                    actions.setName(userInfo.name);
+                    actions.setEmail(userInfo.email);
+                    actions.setPhone(userInfo.phone);
+                    // actions.setPassword(userInfo.password);
+                    navigation.navigate('AfterLoginPage')
+                };
             } catch(err) {
                 console.error('액세스 토큰 로딩 중 오류: ', err);
             }

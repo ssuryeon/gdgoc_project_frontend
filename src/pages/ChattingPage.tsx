@@ -154,12 +154,12 @@ const ChattingPage = ({navigation, route}) => {
 
     return (
         <>
-            <Header text={route.params.nickname}/>
+            <Header text={route.params.nickname || route.params.username}/>
             <Pressable style={{position: 'absolute', top: '5%', left: 5, transform: 'translateY(-20px)'}} onPress={onPress}><Ionicons name='chevron-back-outline' size={45} color='#fff'/></Pressable>
             <ScrollView style={{width: '100%', height: '90%'}}>
                 <Container style={{backgroundColor: theme.inputColor, padding: 20, justifyContent: 'flex-start', minHeight: '100%'}}>
                     <View style={{width: '100%', height: '100%', paddingRight: 40}}>
-                        {chats.filter(chat => chat.message.message == 'init' || chat.message.message == null || chat.message.message =='').map((chat, idx) => (
+                        {chats.filter(chat => chat.message != 'init' || chat.message != null || chat.message !='').map((chat, idx) => (
                             chat.username == route.params.username ? <OtherChat text={chat.message} key={idx}/> : <MyChat text={chat.message} key={idx}/>
                         ))}
                     </View>
